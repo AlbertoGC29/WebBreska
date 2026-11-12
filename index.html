@@ -3,9 +3,802 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hola Mundo</title>
+    <title>ALBERTO GARZÓN | Nueva Colección</title>
+    <style>
+        /* RESET Y VARIABLES */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --gray-light: #f4f4f4;
+            --gray-mid: #757575;
+            --accent-color: #d90429; /* Rojo típico de etiquetas de descuento/novedad */
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* HEADER / NAVEGACIÓN */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 1000;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            color: #ffffff;
+        }
+
+        header.scrolled, header:hover {
+            background-color: #ffffff;
+            color: #000000;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-left a:hover, .nav-right button:hover {
+            text-decoration: underline;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 92vh;
+            background-image: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px 24px;
+            color: #ffffff;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .hero-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            line-height: 0.95;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 12px 28px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: #ffffff;
+        }
+
+        /* BARRA DE CATEGORÍAS RÁPIDAS */
+        .category-bar {
+            display: flex;
+            gap: 12px;
+            padding: 20px 24px;
+            overflow-x: auto;
+            border-bottom: 1px solid #e5e5e5;
+            scrollbar-width: none;
+        }
+        .category-bar::-webkit-scrollbar { display: none; }
+
+        .cat-pill {
+            padding: 8px 16px;
+            border: 1px solid #000;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .cat-pill:hover, .cat-pill.active {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* GRID EDITORIAL (2 COLUMNAS GRANDES) */
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+            padding: 4px;
+        }
+
+        .editorial-card {
+            position: relative;
+            height: 75vh;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .editorial-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .editorial-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .editorial-info {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            color: #ffffff;
+            z-index: 2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+
+        .editorial-info h2 {
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .editorial-info span {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: underline;
+        }
+
+        /* SECCIÓN DE PRODUCTOS (GRID DE 4 COLUMNAS) */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 40px 24px 16px;
+        }
+
+        .section-header h3 {
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header a {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: underline;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 0 24px 60px;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            group: product;
+        }
+
+        .product-img-wrap {
+            position: relative;
+            aspect-ratio: 3/4;
+            background-color: var(--gray-light);
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .badge-new {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #fff;
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 6px;
+            text-transform: uppercase;
+        }
+
+        .btn-quick-add {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #000;
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            font-weight: 400;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease, background 0.2s;
+        }
+
+        .product-img-wrap:hover .btn-quick-add {
+            opacity: 1;
+        }
+
+        .btn-quick-add:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .product-title {
+            font-size: 12px;
+            color: #222;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* BANNER PROMOCIONAL */
+        .promo-banner {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 60px 20px;
+            margin: 20px 0;
+        }
+
+        .promo-banner h2 {
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .promo-banner p {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 24px;
+        }
+
+        /* NEWSLETTER Y FOOTER */
+        footer {
+            border-top: 1px solid #e5e5e5;
+            padding: 50px 24px 30px;
+            font-size: 12px;
+        }
+
+        .newsletter {
+            max-width: 450px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+
+        .newsletter h4 {
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .newsletter p {
+            color: var(--gray-mid);
+            margin-bottom: 16px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            border-bottom: 1px solid #000;
+            padding-bottom: 6px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        .newsletter-form button {
+            background: none;
+            border: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h5 {
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-size: 11px;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 8px;
+            color: var(--gray-mid);
+        }
+
+        .footer-col ul li a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            color: var(--gray-mid);
+            font-size: 11px;
+        }
+
+        /* DRAWER CARRITO LATERAL */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            max-width: 100%;
+            height: 100vh;
+            background: #fff;
+            z-index: 2000;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+        }
+
+        .cart-drawer.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 12px;
+        }
+
+        .cart-footer {
+            border-top: 1px solid #e5e5e5;
+            padding-top: 16px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1500;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .editorial-grid {
+                grid-template-columns: 1fr;
+            }
+            .editorial-card {
+                height: 55vh;
+            }
+            .nav-left {
+                display: none;
+            }
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hola mundo</h1>
+
+    <!-- HEADER -->
+    <header id="main-header">
+        <nav class="nav-left">
+            <a href="#novedades">Novedades</a>
+            <a href="#ropa">Ropa</a>
+            <a href="#zapatos">Zapatos</a>
+            <a href="#accesorios">Accesorios</a>
+            <a href="#editorial" style="color: #d90429;">Special Prices</a>
+        </nav>
+
+        <a href="#" class="logo">ALBERTO GARZÓN</a>
+
+        <div class="nav-right">
+            <button class="icon-btn" onclick="alert('Buscador rápido de ALBERTO GARZÓN')">Buscar</button>
+            <button class="icon-btn">Iniciar sesión</button>
+            <button class="icon-btn" onclick="toggleCart()">Cesta (<span id="cart-count">0</span>)</button>
+        </div>
+    </header>
+
+    <!-- HERO BANNER PRINCIPAL -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">Nueva Colección // Drop 04</span>
+            <h1 class="hero-title">Urban<br>Essentials</h1>
+            <a href="#novedades" class="btn-primary">Ver Colección</a>
+        </div>
+    </section>
+
+    <!-- BARRA DE CATEGORÍAS -->
+    <div class="category-bar">
+        <a href="#novedades" class="cat-pill active">Ver Todo</a>
+        <a href="#novedades" class="cat-pill">Abrigos y Cazadoras</a>
+        <a href="#novedades" class="cat-pill">Jeans</a>
+        <a href="#novedades" class="cat-pill">Vestidos</a>
+        <a href="#novedades" class="cat-pill">Sudaderas</a>
+        <a href="#novedades" class="cat-pill">Tops y Bodies</a>
+        <a href="#novedades" class="cat-pill">Zapatos</a>
+        <a href="#novedades" class="cat-pill">Bolsos</a>
+    </div>
+
+    <!-- EDITORIAL GRID (DOBLE IMAGEN) -->
+    <section class="editorial-grid" id="editorial">
+        <div class="editorial-card">
+            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1000&auto=format&fit=crop" alt="Denim Collection">
+            <div class="editorial-info">
+                <h2>Denim Culture</h2>
+                <span>Comprar ahora</span>
+            </div>
+        </div>
+        <div class="editorial-card">
+            <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1000&auto=format&fit=crop" alt="Streetwear">
+            <div class="editorial-info">
+                <h2>Night Out</h2>
+                <span>Descubrir</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS DESTACADOS -->
+    <section id="novedades">
+        <div class="section-header">
+            <h3>Novedades Mujer</h3>
+            <a href="#">Ver todo (124)</a>
+        </div>
+
+        <div class="product-grid">
+            <!-- Producto 1 -->
+            <article class="product-card">
+                <div class="product-img-wrap">
+                    <span class="badge-new">New</span>
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=800&auto=format&fit=crop" alt="Cazadora efecto piel">
+                    <button class="btn-quick-add" title="Añadir a la cesta" onclick="addToCart('Cazadora biker efecto piel', 39.99)">+</button>
+                </div>
+                <h4 class="product-title">Cazadora biker efecto piel oversize</h4>
+                <span class="product-price">39,99 €</span>
+            </article>
+
+            <!-- Producto 2 -->
+            <article class="product-card">
+                <div class="product-img-wrap">
+                    <span class="badge-new">New</span>
+                    <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=800&auto=format&fit=crop" alt="Jeans wide leg">
+                    <button class="btn-quick-add" title="Añadir a la cesta" onclick="addToCart('Jeans wide leg tiro bajo', 29.99)">+</button>
+                </div>
+                <h4 class="product-title">Jeans wide leg tiro bajo lavado ácido</h4>
+                <span class="product-price">29,99 €</span>
+            </article>
+
+            <!-- Producto 3 -->
+            <article class="product-card">
+                <div class="product-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop" alt="Sudadera gráfica">
+                    <button class="btn-quick-add" title="Añadir a la cesta" onclick="addToCart('Sudadera boxy fit print', 25.99)">+</button>
+                </div>
+                <h4 class="product-title">Sudadera boxy fit print frontal</h4>
+                <span class="product-price">25,99 €</span>
+            </article>
+
+            <!-- Producto 4 -->
+            <article class="product-card">
+                <div class="product-img-wrap">
+                    <span class="badge-new">Top Ventas</span>
+                    <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop" alt="Zapatillas plataforma">
+                    <button class="btn-quick-add" title="Añadir a la cesta" onclick="addToCart('Zapatillas deportivas plataforma', 35.99)">+</button>
+                </div>
+                <h4 class="product-title">Zapatillas deportivas suela volumen</h4>
+                <span class="product-price">35,99 €</span>
+            </article>
+        </div>
+    </section>
+
+    <!-- BANNER PROMOCIONAL -->
+    <section class="promo-banner">
+        <h2>ALBERTO GARZÓN CLUB</h2>
+        <p>Únete ahora y consigue un 10% de descuento en tu primera compra + acceso anticipado a drops exclusivos.</p>
+        <a href="#newsletter" class="btn-primary">Registrarme gratis</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="newsletter" id="newsletter">
+            <h4>Suscríbete a nuestra newsletter</h4>
+            <p>Recibe las últimas tendencias, novedades y ofertas exclusivas de ALBERTO GARZÓN.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte a ALBERTO GARZÓN!');">
+                <input type="email" placeholder="Introduce tu e-mail" required>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <div class="footer-links">
+            <div class="footer-col">
+                <h5>Ayuda</h5>
+                <ul>
+                    <li><a href="#">Comprar online</a></li>
+                    <li><a href="#">Pago</a></li>
+                    <li><a href="#">Envío</a></li>
+                    <li><a href="#">Devoluciones</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Empresa</h5>
+                <ul>
+                    <li><a href="#">Sobre ALBERTO GARZÓN</a></li>
+                    <li><a href="#">Trabaja con nosotros</a></li>
+                    <li><a href="#">Sostenibilidad</a></li>
+                    <li><a href="#">Prensa</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Políticas</h5>
+                <ul>
+                    <li><a href="#">Política de privacidad</a></li>
+                    <li><a href="#">Condiciones de compra</a></li>
+                    <li><a href="#">Política de cookies</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Síguenos</h5>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">TikTok</a></li>
+                    <li><a href="#">YouTube</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>ESPAÑA | ESPAÑOL</span>
+            <span>© 2026 ALBERTO GARZÓN. Todos los derechos reservados.</span>
+        </div>
+    </footer>
+
+    <!-- CARRITO LATERAL (DRAWER) -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <span>Tu Cesta</span>
+            <button class="icon-btn" onclick="toggleCart()">Cerrar ✕</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p style="color: #757575; font-size: 12px;">Tu cesta está vacía.</p>
+        </div>
+        <div class="cart-footer">
+            <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 13px;">
+                <span>TOTAL</span>
+                <span id="cart-total">0,00 €</span>
+            </div>
+            <button class="btn-checkout" onclick="alert('Procesando pedido en ALBERTO GARZÓN...')">Tramitar pedido</button>
+        </div>
+    </aside>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Efecto de cambio de color del header al hacer scroll
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Lógica básica del carrito de compras
+        let cart = [];
+
+        function toggleCart() {
+            document.getElementById('cart-drawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartUI();
+            toggleCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cart-count');
+            const itemsEl = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+
+            countEl.textContent = cart.length;
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = '<p style="color: #757575; font-size: 12px;">Tu cesta está vacía.</p>';
+                totalEl.textContent = '0,00 €';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-weight: 700;">${item.name}</div>
+                            <div style="color: #757575; margin-top: 4px;">${item.price.toFixed(2).replace('.', ',')} €</div>
+                        </div>
+                        <button onclick="removeFromCart(${index})" style="background:none; border:none; text-decoration:underline; font-size:11px; cursor:pointer;">Eliminar</button>
+                    </div>
+                `;
+            });
+
+            itemsEl.innerHTML = html;
+            totalEl.textContent = total.toFixed(2).replace('.', ',') + ' €';
+        }
+    </script>
 </body>
 </html>
